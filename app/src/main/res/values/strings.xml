@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">SOS Screen</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">HELP!\nS O S</string>
+    <string name="sos_text">HELP!\nS O S</string>
 
 </resources>
