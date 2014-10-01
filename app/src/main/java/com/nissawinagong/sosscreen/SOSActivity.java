@@ -3,9 +3,11 @@ package com.nissawinagong.sosscreen;
 import com.nissawinagong.sosscreen.util.SystemUiHider;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -34,14 +36,16 @@ public class SOSActivity extends Activity {
      * True if the background is dark.
      */
     private boolean mDark = false;
-
     private FrameLayout mFullFrame;
     private TextView    mFrameText;
+    private String      mOnlyHelp;
+    private float       mTextSizeLandscape;
+    private float       mTextSizePortrait;
+
     private static final int mDotMS = 300;
     private static final int mDashMS = 800;
     private static final int mSpaceMS = 800;
     private static final int mCycleMS = 3000;
-
 
 
     @Override
@@ -52,7 +56,13 @@ public class SOSActivity extends Activity {
 
         setContentView(R.layout.activity_sos);
 
-        final View contentView = findViewById(R.id.fullscreen_content);
+        final TextView contentView = (TextView)findViewById(R.id.fullscreen_content);
+        mFrameText = contentView;
+        mFullFrame = (FrameLayout) findViewById(R.id.fullscreen);
+        mOnlyHelp = mFrameText.getText().toString().
+                substring(0, mFrameText.getText().toString().indexOf('\n'));
+        mTextSizePortrait =
+                mTextSizeLandscape = mFrameText.getTextSize();
 
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
@@ -79,17 +89,23 @@ public class SOSActivity extends Activity {
     }
 
     private void SOSFlash() {
-        mFullFrame = (FrameLayout) findViewById(R.id.fullscreen);
-        mFrameText = (TextView)    findViewById(R.id.fullscreen_content);
-
         new Thread(new Runnable() { public void run() {
-            try {Thread.sleep(mSpaceMS*2);} catch (Exception e){}
+            runOnUiThread(new Runnable() { @Override public void run() { //stuff that updates ui
+                mFrameText.setText(mOnlyHelp);
+            }});
+
+            try {Thread.sleep(mCycleMS);} catch (Exception e){}
+            sizeText();
+            runOnUiThread(new Runnable() { @Override public void run() { //stuff that updates ui
+                mFrameText.setTextColor(Color.YELLOW);
+            }});
+
+            try {Thread.sleep(mCycleMS);} catch (Exception e){}
             mDark = false;
             swapColors();
             try {Thread.sleep(mSpaceMS);} catch (Exception e){}
 
             while (true) {
-
                 threeX(mDotMS);
                 try {Thread.sleep(mSpaceMS);} catch (Exception e){}
                 threeX(mDashMS);
@@ -122,7 +138,9 @@ public class SOSActivity extends Activity {
         }
     }
 
-    private void swapColors(/* final FrameLayout fullFrame, final TextView frameText*/ ) {
+    private void swapColors() {
+
+        sizeText();
         if (mDark)
         {
             runOnUiThread(new Runnable() { @Override public void run() { //stuff that updates ui
@@ -130,7 +148,7 @@ public class SOSActivity extends Activity {
                 mFrameText.setTextColor(Color.RED);
             }});
             mDark = false;
-        }
+         }
         else {
             runOnUiThread(new Runnable() { @Override public void run() { //stuff that updates ui
                 mFullFrame.setBackgroundColor(Color.BLACK);
@@ -139,6 +157,48 @@ public class SOSActivity extends Activity {
             mDark = true;
         }
 
+    }
+
+    private boolean sizeText() {
+        boolean sizeChanged = false;
+        float textSize;
+        float textWidth = mFrameText.getPaint().measureText(mOnlyHelp);
+        final float frameWidth =  mFrameText.getWidth();
+        final float textScale = mFrameText.getTextScaleX();
+
+        while (
+                ( textWidth
+                      > frameWidth        )
+//                ||
+//                ( mFrameText.getTextSize() * 2
+//                      >         mFrameText.getHeight() )
+              )
+        {
+            sizeChanged = true;
+            textSize = mFrameText.getTextSize();
+            textSize *= textScale;
+            textSize /= 2;
+            textSize -= 1;
+            final float newTextSize = textSize;
+
+            runOnUiThread(new Runnable() { @Override public void run() { //stuff that updates ui
+//                mFrameText.setTextColor(mFullFrame.getSolidColor());
+                mFrameText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, newTextSize);
+            }});
+            try {Thread.sleep(2);} catch (Exception e){}
+
+            textWidth = mFrameText.getPaint().measureText(mOnlyHelp);
+
+//            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                mTextSizeLandscape = mFrameText.getTextSize();
+//                mTextSizePortrait = mFrameText.getTextSize();
+//            }
+//            else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+//            {
+//                mTextSizePortrait = mFrameText.getTextSize();
+//            }
+        }
+        return sizeChanged;
     }
 
     @Override
@@ -169,4 +229,17 @@ public class SOSActivity extends Activity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            mFrameText.setTextSize(mTextSizeLandscape);
+//        }
+//        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+//        {
+//            mFrameText.setTextSize(mTextSizePortrait);
+//        }
+//    }
 }

@@ -8,16 +8,16 @@
         revision="20.0.0"
         sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
     <item
-        dex="/home/seeger/AndroidStudioProjects/SOSScreen/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-4ee0f12034d2a5e6391df96bd142d98cc006c2b3.jar"
-        jar="/home/seeger/AndroidStudioProjects/SOSScreen/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
-    <item
         dex="/home/seeger/AndroidStudioProjects/SOSScreen/app/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-1597dc2fd6dbe1679d77533ef9d1b2c56c767b3c.jar"
         jar="/home/seeger/android-studio/sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="/home/seeger/AndroidStudioProjects/SOSScreen/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-4ee0f12034d2a5e6391df96bd142d98cc006c2b3.jar"
+        jar="/home/seeger/AndroidStudioProjects/SOSScreen/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
 
 </pre-dex-items>

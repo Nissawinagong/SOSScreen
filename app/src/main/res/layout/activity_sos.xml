@@ -12,7 +12,7 @@
         android:keepScreenOn="true"
         android:textColor="#FFFF00"
         android:textStyle="bold"
-        android:textSize="256sp"
+        android:textSize="512dp"
         android:gravity="center"
         android:text="@string/sos_text" />
 
